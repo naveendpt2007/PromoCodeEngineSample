@@ -83,6 +83,7 @@ public class PromoCodeService {
 		}
 		productDto.setDiscountValue(totalDiscount);
 		int finalV = totalPrice - totalDiscount;
+		productDto.setFinalPrice(finalV);
 		return finalV;
 //		return totalPrice - totalDiscount;
 	}
@@ -94,7 +95,7 @@ public class PromoCodeService {
 		ProductDto prodductDto = new ProductDto();
 		prodductDto.setBasPrice(50);
 		prodductDto.setProductType("A");
-		prodductDto.setQty(5);
+		prodductDto.setQty(3);
 		
 		ProductDto prodductDto2 = new ProductDto();
 		prodductDto2.setBasPrice(30);
@@ -109,7 +110,7 @@ public class PromoCodeService {
 		List<ProductDto> shoppingCartList = new ArrayList<ProductDto>();
 		shoppingCartList.add(prodductDto);
 		shoppingCartList.add(prodductDto2);
-		shoppingCartList.add(prodductDto3);
+//		shoppingCartList.add(prodductDto3);
 		shopDto.setProductList(shoppingCartList);
 		
 		PromoCodeService controller = new PromoCodeService();
