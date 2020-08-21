@@ -68,7 +68,7 @@ public class PromoCodeService {
 					productDto.setDiscountValue(totalPrice);
 					productDto.setFinalPrice(0);
 					cartTotal = cartTotal + 0;
-				}else if(ifDependedProductInCart(shoppingCart, dependedProduct) && !productType.equals(dependedProduct) && promoCodeDto.isByValue()){
+				}else if(ifDependedProductInCart(shoppingCart, dependedProduct) && productType.equals(dependedProduct) && promoCodeDto.isByValue()){
 					int price = productDto.getBasePrice();
 					int totalPrice = price * productDto.getQty();
 					productDto.setDiscountValue(totalPrice);
@@ -151,8 +151,9 @@ public class PromoCodeService {
 		PromoCodeService controller = new PromoCodeService();
 		PromoCodeDto promoCode = new PromoCodeDto();
 //		promoCode.setActive(true);
-		promoCode.setCombined(false);
+		promoCode.setCombined(true);
 		promoCode.setMinQty(1);
+		promoCode.setOperations("and");;
 		promoCode.setPercentage(0);
 		promoCode.setValue(30);
 		promoCode.setByValue(true);;
@@ -166,8 +167,8 @@ public class PromoCodeService {
 		controller.addPromoCode(promoCode);
 		
 		controller.applyPromo(shopDto);
-		for(ProductDto productDto : shopDto.getProductList()) {
-			System.out.println(productDto.toString());
+		for(ProductDto proDto : shopDto.getProductList()) {
+			System.out.println(proDto.getProductType() + " : " + proDto.getFinalPrice());
 		}
 		System.out.println(shopDto.getTotal());
 		
