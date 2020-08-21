@@ -22,7 +22,7 @@ public class PromoCodeService {
 		Gson gson = new Gson();
 		promoCodeList.add(gson.fromJson(promo1, PromoCodeDto.class));
 		promoCodeList.add(gson.fromJson(promo2, PromoCodeDto.class));
-		promoCodeList.add(gson.fromJson(promo3, PromoCodeDto.class));
+//		promoCodeList.add(gson.fromJson(promo3, PromoCodeDto.class));
 	}
 	
 	public PromoCodeDto getPromoCode(String productName) {
@@ -51,18 +51,40 @@ public class PromoCodeService {
 		for(ProductDto productDto : shoppingCart.getProductList()) {
 			String productType = productDto.getProductType();
 			PromoCodeDto promoCodeDto = getPromoCode(productType);
-			if(promoCodeDto.getMinQty() == productDto.getQty()) {
-				int discountPercentage = promoCodeDto.getPercentage();
+//			if(promoCodeDto.getMinQty() == productDto.getQty()) {
+//				cartTotal = cartTotal + calDiscount(productDto, promoCodeDto);
+//			}else if (productDto.getQty() > promoCodeDto.getMinQty() ) {
+//				cartTotal = cartTotal + calDiscount(productDto, promoCodeDto);
+			if(promoCodeDto != null) {
+				cartTotal = cartTotal + calDiscount(productDto, promoCodeDto);
+			}else {
 				int price = productDto.getBasePrice();
 				int totalPrice = price * productDto.getQty();
-				int discountPrice = (int)Math.round((((double)discountPercentage ) / 100) * totalPrice);
-				productDto.setDiscountValue(discountPrice);
-				int finalPrice = totalPrice - discountPrice;
-				productDto.setFinalPrice(finalPrice);
-				cartTotal = cartTotal + finalPrice;
+				cartTotal = cartTotal + totalPrice;
 			}
 		}
 		shoppingCart.setTotal(cartTotal);
+	}
+	
+	public int calDiscount(ProductDto productDto, PromoCodeDto promoCodeDto) {
+		int discountPercentage = promoCodeDto.getPercentage();
+		int miniQty = promoCodeDto.getMinQty();
+		int price = productDto.getBasePrice();
+		int totalPrice = price * productDto.getQty();
+		int productQty = productDto.getQty();
+		int reminder = productQty % miniQty;
+		int totalDiscount = 0;
+		if(reminder != 0) {
+			int q = productQty - reminder;
+			int unitT = price * q;
+			totalDiscount = totalDiscount + (int)Math.round((((double)discountPercentage ) / 100) * unitT);
+		}else {
+			totalDiscount = totalDiscount + (int)Math.round((((double)discountPercentage ) / 100) * totalPrice);
+		}
+		productDto.setDiscountValue(totalDiscount);
+		int finalV = totalPrice - totalDiscount;
+		return finalV;
+//		return totalPrice - totalDiscount;
 	}
 	
 	public static void main(String[] args) {
@@ -72,21 +94,21 @@ public class PromoCodeService {
 		ProductDto prodductDto = new ProductDto();
 		prodductDto.setBasPrice(50);
 		prodductDto.setProductType("A");
-		prodductDto.setQty(3);
+		prodductDto.setQty(5);
 		
 		ProductDto prodductDto2 = new ProductDto();
 		prodductDto2.setBasPrice(30);
 		prodductDto2.setProductType("B");
-		prodductDto2.setQty(2);
+		prodductDto2.setQty(5);
 		
 		ProductDto prodductDto3 = new ProductDto();
-		prodductDto3.setBasPrice(30);
+		prodductDto3.setBasPrice(20);
 		prodductDto3.setProductType("C");
 		prodductDto3.setQty(1);
 		
 		List<ProductDto> shoppingCartList = new ArrayList<ProductDto>();
-//		shoppingCartList.add(prodductDto);
-//		shoppingCartList.add(prodductDto2);
+		shoppingCartList.add(prodductDto);
+		shoppingCartList.add(prodductDto2);
 		shoppingCartList.add(prodductDto3);
 		shopDto.setProductList(shoppingCartList);
 		
@@ -98,14 +120,18 @@ public class PromoCodeService {
 		promoCode.setPercentage(10);
 		promoCode.setProductTypeArray(new String[] {"C"});
 		
+		int value = 5 % 3;
+		System.out.println(value);
+		
 		PromoCodeDto dto = controller.getPromoCode("A");
 		System.out.println(dto);
-		controller.addPromoCode(promoCode);
+//		controller.addPromoCode(promoCode);
 		
 		controller.applyPromo(shopDto);
 		for(ProductDto productDto : shopDto.getProductList()) {
 			System.out.println(productDto.toString());
 		}
+		System.out.println(shopDto.getTotal());
 		
 
 	}
