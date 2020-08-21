@@ -143,5 +143,43 @@ public class PromoEngineApplicationTests {
 		Assert.assertEquals(120, shopDto.getProduct(1).getFinalPrice());
 	}
 	
+	@Test
+	public void test3() {
+		ShoppingCartDto shopDto = new ShoppingCartDto();
+		
+		ProductDto prod = new ProductDto();
+		prod.setBasPrice(50);
+		prod.setProductType("A");
+		prod.setQty(5);
+		
+		ProductDto prod2 = new ProductDto();
+		prod2.setBasPrice(30);
+		prod2.setProductType("B");
+		prod2.setQty(5);
+		
+		ProductDto prod3 = new ProductDto();
+		prod3.setBasPrice(20);
+		prod3.setProductType("C");
+		prod3.setQty(1);
+		
+		ProductDto prod4 = new ProductDto();
+		prod4.setBasPrice(15);
+		prod4.setProductType("D");
+		prod4.setQty(1);
+		
+		List<ProductDto> shoppingCartList = new ArrayList<ProductDto>();
+		shoppingCartList.add(prod);
+		shoppingCartList.add(prod2);
+		shoppingCartList.add(prod3);
+		shoppingCartList.add(prod4);
+		shopDto.setProductList(shoppingCartList);
+		
+		promoCodeService.applyPromo(shopDto);
+		Assert.assertEquals(230, shopDto.getProduct(0).getFinalPrice());
+		Assert.assertEquals(120, shopDto.getProduct(1).getFinalPrice());
+		Assert.assertEquals(20, shopDto.getProduct(2).getFinalPrice());
+		Assert.assertEquals(15, shopDto.getProduct(3).getFinalPrice());
+	}
+	
 
 }
