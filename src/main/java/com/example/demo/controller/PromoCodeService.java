@@ -60,6 +60,8 @@ public class PromoCodeService {
 			}else {
 				int price = productDto.getBasePrice();
 				int totalPrice = price * productDto.getQty();
+				productDto.setDiscountValue(0);
+				productDto.setFinalPrice(totalPrice);
 				cartTotal = cartTotal + totalPrice;
 			}
 		}
