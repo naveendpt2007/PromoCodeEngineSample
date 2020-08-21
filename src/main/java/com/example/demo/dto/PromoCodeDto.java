@@ -7,9 +7,11 @@ public class PromoCodeDto {
 	private String[] productTypeArray;
 	private int minQty;
 	private int percentage;
+	private int value;
 	private boolean isCombined;
 	private String operations = "";
 	private boolean isActive = true;
+	private boolean isByValue = false;
 	
 	/**
 	 * @return the productTypeArray
@@ -86,6 +88,30 @@ public class PromoCodeDto {
 	
 	public String toString() {
 		return "PromoCode : " + Arrays.toString(productTypeArray) + " : " + minQty + " : " + percentage + " : " + isCombined + " : " + operations;
+	}
+	/**
+	 * @return the value
+	 */
+	public int getValue() {
+		return value;
+	}
+	/**
+	 * @param value the value to set
+	 */
+	public void setValue(int value) {
+		this.value = value;
+	}
+	/**
+	 * @return the isByValue
+	 */
+	public boolean isByValue() {
+		return isByValue;
+	}
+	/**
+	 * @param isByValue the isByValue to set
+	 */
+	public void setByValue(boolean isByValue) {
+		this.isByValue = isByValue;
 	}
 
 }
